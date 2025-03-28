@@ -1,0 +1,5 @@
+pt2:
+  compile:
+    enable: false
+    backend: inductor
+    mode: reduce-overhead
