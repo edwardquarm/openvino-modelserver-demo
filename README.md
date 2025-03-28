@@ -25,7 +25,7 @@ torch-model-archiver \
   --model-file model.py \
   --serialized-file densenet161-8d451a50.pth \
   --export-path model_store \
-  --extra-files ../../image_classifier/index_to_name.json \
+  --extra-files index_to_name.json \
   --handler image_classifier \
   --config-file model-config.yaml \
   -f
@@ -34,13 +34,13 @@ torch-model-archiver \
 ### 4. Start TorchServe
 Start the TorchServe server with the archived model:
 ```bash
-torchserve --start --ncs --model-store model_store --models densenet161.mar --disable-token-auth --enable-model-api
+torchserve --start --ncs --model-store model_store --models model_store/densenet161.mar --disable-token-auth --enable-model-api
 ```
 
 ### 5. Test the Model
 Send a test image to the model for inference:
 ```bash
-curl http://127.0.0.1:8080/predictions/densenet161 -T ../../image_classifier/kitten.jpg
+curl http://127.0.0.1:8080/predictions/densenet161 -T kitten.jpg
 ```
 
 ---
