@@ -62,13 +62,10 @@ ov_model = ov.convert_model(model)
 ov.serialize(ov_model, "openvino_model/model.xml", "openvino_model/model.bin")
 ```
 
-### 7. Package the Model for OpenVINO Model Server
-Organize the OpenVINO IR files into a directory structure compatible with OpenVINO Model Server:
-```
-model/
-├── 1/
-│   ├── model.xml
-│   ├── model.bin
+### 7. Run Inference on the OpenVINO Model
+Run the inference script to test the OpenVINO model:
+```bash
+python openvino_inference.py
 ```
 
 ### 8. Deploy the Model on KServe
