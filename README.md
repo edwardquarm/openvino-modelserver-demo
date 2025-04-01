@@ -62,13 +62,28 @@ ov_model = ov.convert_model(model)
 ov.serialize(ov_model, "openvino_model/model.xml", "openvino_model/model.bin")
 ```
 
-### 7. Run Inference on the OpenVINO Model
+### 7. Organize the Model for KServe
+Ensure the OpenVINO model files are organized in the following folder structure:
+```
+openvino_model/
+└── 1/
+    ├── model.xml
+    ├── model.bin
+```
+Move the converted model files into the `1/` directory:
+```bash
+mkdir -p openvino_model/1
+mv openvino_model/model.xml openvino_model/1/
+mv openvino_model/model.bin openvino_model/1/
+```
+
+### 8. Run local Inference on the OpenVINO Model
 Run the inference script to test the OpenVINO model:
 ```bash
 python openvino_inference.py
 ```
 
-### 8. Deploy the Model on KServe
+### 9. Deploy the Model on KServe
 Create a KServe InferenceService YAML file:
 ```yaml
 apiVersion: serving.kserve.io/v1beta1
@@ -80,7 +95,7 @@ spec:
     model:
       modelFormat:
         name: openvino
-      storageUri: "s3://your-bucket/model"
+      storageUri: "s3://your-bucket/openvino_model"
 ```
 
 Apply the YAML file to your Kubernetes cluster:
@@ -88,7 +103,7 @@ Apply the YAML file to your Kubernetes cluster:
 kubectl apply -f inference-service.yaml
 ```
 
-### 9. Test the Deployment
+### 10. Test the Deployment
 Send a test request to the deployed model:
 ```bash
 curl -X POST http://<kserve-endpoint>/v1/models/densenet-openvino:predict -d '{"instances": [[...]]}'
